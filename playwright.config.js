@@ -15,7 +15,7 @@ export default defineConfig({
     fullyParallel: true,
 
     // Retry failed tests
-    retries: 1,
+    retries: process.env.CI ? 2 : 1,
 
     // Reporters
     reporter: [
@@ -29,8 +29,8 @@ export default defineConfig({
         // Application URL
         baseURL: environments.qa.url,
 
-        // Browser Mode
-        headless: false,
+        // Run headed locally, headless in GitHub Actions
+        headless: process.env.CI ? true : false,
 
         // Ignore HTTPS errors
         ignoreHTTPSErrors: true,
@@ -47,8 +47,8 @@ export default defineConfig({
         // Record Video on Failure
         video: 'retain-on-failure',
 
-        // Save Trace on Failure
-        trace: 'retain-on-failure',
+        // Save Trace on Retry
+        trace: 'on-first-retry',
 
         // Action Timeout
         actionTimeout: 30000,
